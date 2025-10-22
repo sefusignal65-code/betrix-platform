@@ -7,7 +7,14 @@
     "build": "vite build",
     "start": "vite preview"
   },
-  "keywords": ["betting", "sports", "affiliate"],
+  "keywords": [
+    "betting",
+    "sports",
+    "affiliate"
+  ],
   "author": "You",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^7.1.11"
+  }
 }
