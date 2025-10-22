@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "BETRIX betting platform frontend",
   "scripts": {
-    "dev": "echo 'Static site - no build needed'",
-    "build": "echo 'Build complete' && exit 0",
-    "start": "echo 'Static site'"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "vite preview"
   },
   "keywords": ["betting", "sports", "affiliate"],
   "author": "You",
