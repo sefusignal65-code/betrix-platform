@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BETRIX - Betting Platform</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: gold;
+            font-size: 3em;
+        }
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<bod>
+    <div class="container">
+        <h1>🎯 BETRIX PRO</h1>
+        <p>Welcome to your first betting platform!</p>
+        
+        <div class="feature">
+            <h3>💰 How We Make Money</h3>
+            <p>When users sign up to betting sites through our links, we earn commissions!</p>
+        </div>
+        
+        <div class="feature">
+            <h3>🚀 Coming Soon</h3>
+            <p>• Betting tips • Live odds • AI predictions • Tournaments</p>
+        </div>
+        
+        <div class="feature">
+            <h3>📈 Revenue Streams</h3>
+            <p>Affiliate commissions, premium features, advertising</p>
+        </div>
+    </div>
+<sc>
+<script>
+    let clickCount = 0;
+
+    function changeMessage() {
+        clickCount++;
+        document.getElementById('welcomeMessage').innerHTML = '🎉 Welcome to the future of betting!';
+        document.getElementById('clickCount').innerHTML = 'Button clicked: ' + clickCount + ' times';
+    }
+</script>
+<p id="clickCount">Button clicked: 0 times</p>

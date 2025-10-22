@@ -1,0 +1,13 @@
+{ 
+  "name": "betrix-frontend", 
+  "version": "1.0.0", 
+  "description": "BETRIX betting platform frontend", 
+  "main": "index.html", 
+  "scripts": { 
+    "dev": "echo 'This is a static site - no build needed'", 
+    "build": "echo 'Build complete'" 
+  }, 
+  "keywords": ["betting", "sports", "affiliate"], 
+  "author": "You", 
+  "license": "MIT" 
+} 
