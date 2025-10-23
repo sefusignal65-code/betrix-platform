@@ -4,27 +4,6 @@
   "buildCommand": "cd frontend && npm run build",
   "installCommand": "cd frontend && npm install",
   "routes": [
-    {
-      "src": "/api/admin/canary/enable",
-      "dest": "/api/admin/canary/enable.js",
-      "methods": ["POST"],
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "X-API-Key, Content-Type"
-      }
-    },
-    {
-      "src": "/api/admin/canary/enable",
-      "dest": "/api/admin/canary/enable.js",
-      "methods": ["OPTIONS"],
-      "status": 200,
-      "headers": {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "X-API-Key, Content-Type"
-      }
-    },
     { 
       "handle": "filesystem"
     },
