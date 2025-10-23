@@ -23,9 +23,11 @@ export default defineConfig(({ command, mode }) => {
       target: 'esnext',
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom', 'react-router-dom'],
-            utils: ['axios', 'web-vitals']
+          manualChunks(id) {
+            // Create a vendor chunk for node_modules
+            if (id.includes('node_modules')) {
+              return 'vendor';
+            }
           }
         }
       },
