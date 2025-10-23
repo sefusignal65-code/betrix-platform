@@ -2,38 +2,70 @@ export default async function handler(req, res) {
   // Log incoming request (sanitized)
   console.log('Received request:', {
     method: req.method,
-    path: req.url,
+    export const config = {
+      runtime: 'edge',
+      regions: ['iad1']  // US East (N. Virginia)
+    };
+
+    export default async function handler(req) {
+      // Handle OPTIONS request for CORS
+      if (req.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, X-API-Key',
+            'Access-Control-Max-Age': '86400'
+          }
+        });
+      }
+
     hasApiKey: !!req.headers['x-api-key'],
     body: {
       model: req.body?.model,
-      canaryCount: req.body?.canaryCount,
-      hasClients: !!req.body?.clients,
-      apply: !!req.body?.apply
-    }
-  });
-
-  // Only allow POST requests
-  if (req.method !== 'POST') {
+        url: req.url,
+        hasApiKey: !!req.headers.get('x-api-key')
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Validate API key
+        return new Response(
+          JSON.stringify({ error: 'Method not allowed' }), 
+          { 
+            status: 405,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
     if (req.headers['x-api-key'] !== process.env.ADMIN_API_KEY) {
       return res.status(403).json({ error: 'Forbidden' });
     }
+        const body = await req.json();
 
-    const { model, clients, canaryCount = 2, apply = false } = req.body;
 
-    // Validate required model parameter
+        if (req.headers.get('x-api-key') !== process.env.ADMIN_API_KEY) {
+
+          return new Response(
+            JSON.stringify({ error: 'Forbidden' }), 
+            { 
+              status: 403,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
     if (!model) {
       return res.status(400).json({ error: 'Model parameter is required' });
-    }
+        const { model, clients, canaryCount = 2, apply = false } = body;
 
     // Parse client list or generate random subset
     const clientList = clients
       ? clients.split(',').map(c => c.trim())
-      : await generateRandomClients(canaryCount);
+          return new Response(
+            JSON.stringify({ error: 'Model parameter is required' }), 
+            { 
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
 
     // Validate we have clients to process
     if (!clientList?.length) {
@@ -44,9 +76,15 @@ export default async function handler(req, res) {
 
     // Track changes for response
     const changes = [];
-    const errors = [];
-
-    // Process each client with rate limiting
+          return new Response(
+            JSON.stringify({ 
+              error: 'No clients specified and could not generate random client list' 
+            }), 
+            { 
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
     for (const clientId of clientList) {
       try {
         // In dry-run mode, just log what would happen
@@ -108,20 +146,35 @@ async function generateRandomClients(count) {
   ];
   
   // Shuffle and take first n
-  return allClients
-    .sort(() => Math.random() - 0.5)
-    .slice(0, count);
-}
-
-// Helper to enable model for a client
-async function enableModelForClient(clientId, model) {
+        return new Response(
+          JSON.stringify({
+            success: true,
+            dryRun: !apply,
+            changes,
+            errors: errors.length ? errors : undefined,
+            timestamp: new Date().toISOString()
+          }), 
+          { 
+            status: 200,
+            headers: { 
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*'
+            }
+          }
+        );
   // TODO: Replace with actual API call
   const endpoint = `${process.env.ADMIN_API_BASE}/clients/${clientId}/models`;
   
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+        return new Response(
+          JSON.stringify({ 
+            error: 'Internal server error',
+            message: err.message 
+          }), 
+          { 
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
       'Authorization': `Bearer ${process.env.ADMIN_API_KEY}`
     },
     body: JSON.stringify({
