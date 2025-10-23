@@ -1,4 +1,17 @@
 export default async function handler(req, res) {
+  // Log incoming request (sanitized)
+  console.log('Received request:', {
+    method: req.method,
+    path: req.url,
+    hasApiKey: !!req.headers['x-api-key'],
+    body: {
+      model: req.body?.model,
+      canaryCount: req.body?.canaryCount,
+      hasClients: !!req.body?.clients,
+      apply: !!req.body?.apply
+    }
+  });
+
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
