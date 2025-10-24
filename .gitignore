@@ -31,6 +31,8 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
+#. Editor history (exclude accidental editor history commits)
+.history/
 
 # OS
 .DS_Store
