@@ -1,5 +1,22 @@
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+function validateApiKey(req) {
+  const apiKeyHeader = req.headers['x-api-key'] || 
+                      req.headers['X-API-Key'] || 
+                      req.headers['X-Api-Key'];
+  const expectedKey = process.env.ADMIN_API_KEY;
+  
+  // Debug log (temporary)
+  console.log('API Key debug:', {
+    received: apiKeyHeader,
+    expected: expectedKey,
+    envKeys: Object.keys(process.env),
+    matches: apiKeyHeader === expectedKey
+  });
+  
+  return apiKeyHeader === expectedKey;
+}
+
 async function getRawBody(req) {
   return await new Promise((resolve, reject) => {
     let data = '';
@@ -44,6 +61,11 @@ export default async function handler(req, res) {
   // CORS preflight
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
+  }
+
+  // Verify API key
+  if (!validateApiKey(req)) {
+    return res.status(403).json({ error: 'Invalid API key' });
   }
 
   // Only POST
