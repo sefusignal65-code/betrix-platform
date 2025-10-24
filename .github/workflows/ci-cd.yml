@@ -7,13 +7,12 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x, 20.x]
-
+        
     steps:
     - uses: actions/checkout@v3
     
@@ -23,26 +22,41 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
-    
-    - name: Install Dependencies
+        
+    - name: Install dependencies
       working-directory: ./frontend
       run: npm ci
-    
-    - name: Lint
-      working-directory: ./frontend
-      run: npm run lint
-    
+      
     - name: Type Check
       working-directory: ./frontend
       run: npm run type-check
-    
-    - name: Run Tests
+        
+    - name: Run linting
+      working-directory: ./frontend
+      run: npm run lint
+      
+    - name: Run unit tests
       working-directory: ./frontend
       run: npm run test:coverage
-    
-    - name: Build
+      
+    - name: Run E2E tests
       working-directory: ./frontend
-      run: npm run build
+      run: |
+        npm run build
+        npx playwright install --with-deps
+        npm run test:e2e
+      env:
+        CI: true
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: |
+          frontend/test-results
+          frontend/coverage
+        retention-days: 30
 
     - name: Upload coverage reports
       uses: codecov/codecov-action@v3
@@ -52,7 +66,7 @@ jobs:
         name: frontend-coverage
 
   performance:
-    needs: build-and-test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -78,17 +92,73 @@ jobs:
           npm install -g @lhci/cli@0.12.x
           lhci autorun
 
-  deploy:
-    needs: build-and-test
+  deploy-staging:
+    needs: [test, performance]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    environment: staging
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to Staging
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
+        working-directory: ./frontend
+        alias-domains: |
+          staging.betrix-platform.vercel.app
 
+    - name: Run Health Check
+      run: |
+        HEALTH_CHECK_URL="https://staging.betrix-platform.vercel.app/api/test/ping"
+        for i in {1..5}; do
+          RESPONSE=$(curl -s -w "%{http_code}" "$HEALTH_CHECK_URL")
+          HTTP_CODE=${RESPONSE: -3}
+          BODY=${RESPONSE%???}
+          if [ "$HTTP_CODE" == "200" ]; then
+            echo "Health check passed!"
+            exit 0
+          fi
+          echo "Attempt $i failed, waiting 10s..."
+          sleep 10
+        done
+        echo "Health check failed after 5 attempts"
+        exit 1
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    
     steps:
     - uses: actions/checkout@v3
     
     - name: Deploy to Production
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
+        working-directory: ./frontend
+        
+    - name: Run Health Check
       run: |
-        npm install --global vercel
-        vercel --token ${VERCEL_TOKEN} --prod --yes
+        HEALTH_CHECK_URL="https://betrix-platform.vercel.app/api/test/ping"
+        for i in {1..5}; do
+          RESPONSE=$(curl -s -w "%{http_code}" "$HEALTH_CHECK_URL")
+          HTTP_CODE=${RESPONSE: -3}
+          BODY=${RESPONSE%???}
+          if [ "$HTTP_CODE" == "200" ]; then
+            echo "Health check passed!"
+            exit 0
+          fi
+          echo "Attempt $i failed, waiting 10s..."
+          sleep 10
+        done
+        echo "Health check failed after 5 attempts"
+        exit 1

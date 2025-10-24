@@ -56,34 +56,39 @@ async function activateClients(clients) {
   return response.json();
 }
 
+import { info, error } from '../utils/logger';
+
 export async function executeWave3Rollout() {
-  console.log('Starting Wave 3 (Final Wave) rollout...');
+  info('Starting Wave 3 (Final Wave) rollout');
   
   for (const stage of WAVE_3_CONFIG.stages) {
     // Wait for configured delay
     if (stage.delay > 0) {
-      console.log(`Waiting ${stage.delay/60000} minutes before next activation...`);
+      const delayMinutes = stage.delay/60000;
+      info(`Waiting before next activation`, { delayMinutes });
       await new Promise(resolve => setTimeout(resolve, stage.delay));
     }
     
     // Validate metrics before proceeding
     const health = await validateMetrics();
     if (!health.isHealthy) {
+      error('Unhealthy metrics detected', null, { metrics: health.metrics });
       throw new Error(`Unhealthy metrics detected: ${JSON.stringify(health.metrics)}`);
     }
     
     // Activate this stage's clients
-    console.log(`Activating clients: ${stage.clients.join(', ')}`);
+    info('Activating clients for current stage', { clients: stage.clients });
     await activateClients(stage.clients);
     
     // Wait 5 minutes and check health
     await new Promise(resolve => setTimeout(resolve, 300000));
     const postActivationHealth = await validateMetrics();
     if (!postActivationHealth.isHealthy) {
+      error('Post-activation health check failed', null, { metrics: postActivationHealth.metrics });
       throw new Error(`Post-activation health check failed: ${JSON.stringify(postActivationHealth.metrics)}`);
     }
   }
   
-  console.log('Wave 3 rollout completed successfully');
+  info('Wave 3 rollout completed successfully');
   return true;
 }

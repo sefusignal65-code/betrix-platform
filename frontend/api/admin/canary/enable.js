@@ -7,12 +7,17 @@ function validateApiKey(req) {
   const expectedKey = process.env.ADMIN_API_KEY;
   
   // Debug log (temporary)
-  console.log('API Key debug:', {
-    received: apiKeyHeader,
-    expected: expectedKey,
-    envKeys: Object.keys(process.env),
-    matches: apiKeyHeader === expectedKey
-  });
+  // Debug info available in debug mode only
+  if (process.env.DEBUG) {
+    const debug = {
+      received: apiKeyHeader,
+      expected: expectedKey,
+      envKeys: Object.keys(process.env),
+      matches: apiKeyHeader === expectedKey
+    };
+    // eslint-disable-next-line no-console
+    console.debug('API Key debug:', debug);
+  }
   
   return apiKeyHeader === expectedKey;
 }
@@ -109,7 +114,11 @@ export default async function handler(req, res) {
         changes.push({ clientId, model, status: 'would_enable', dryRun: true });
         continue;
       }
-      console.log('Enabling model for', clientId);
+      // Log operations in debug mode
+      if (process.env.DEBUG) {
+        // eslint-disable-next-line no-console
+        console.debug('Enabling model for', clientId);
+      }
       await enableModelForClient(clientId, model);
       changes.push({ clientId, model, status: 'enabled', timestamp: new Date().toISOString() });
       await sleep(500);

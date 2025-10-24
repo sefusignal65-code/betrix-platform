@@ -1,0 +1,65 @@
+name: Performance Monitoring
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Run every 15 minutes
+  workflow_dispatch:  # Allow manual triggers
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+      
+      - name: Install Lighthouse
+        run: npm install -g @lhci/cli@0.12.x
+      
+      - name: Run Lighthouse CI
+        run: |
+          lhci autorun \
+            --collect.url=https://betrix-platform.vercel.app \
+            --collect.numberOfRuns=3 \
+            --collect.settings.preset=desktop \
+            --assert.preset=lighthouse:recommended \
+            --upload.target=temporary-public-storage
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      
+      - name: Check API Health
+        id: health
+        run: |
+          ENDPOINT="https://betrix-platform.vercel.app/api/test/ping"
+          response=$(curl -s -w "\n%{http_code}" "$ENDPOINT")
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          if [ "$http_code" = "200" ]; then
+            echo "API is healthy"
+            echo "status=healthy" >> $GITHUB_OUTPUT
+          else
+            echo "API health check failed"
+            echo "status=unhealthy" >> $GITHUB_OUTPUT
+            echo "error=$body" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Alert on Failure
+        if: steps.health.outputs.status == 'unhealthy'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: 'alerts'
+          slack-message: |
+            🚨 API Health Check Failed
+            Environment: Production
+            Endpoint: /api/test/ping
+            Error: ${{ steps.health.outputs.error }}
+            
+            <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}

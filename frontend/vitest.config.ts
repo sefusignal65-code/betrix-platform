@@ -5,9 +5,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    // run tests in the main process (no worker threads) to avoid
-    // environments that try to use Bun workers and timeout.
-    threads: false,
+    pool: 'vmThreads',
+    // Increase timeout for slower test environments
+    testTimeout: 10000,
     setupFiles: ['./src/test/setup.ts'],
     coverage: {
       reporter: ['text', 'json', 'html'],

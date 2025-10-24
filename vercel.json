@@ -1,12 +1,19 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm install && npm run build",
+  "buildCommand": "cd frontend && npm ci --prefer-offline --no-audit && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "cd frontend && npm install",
+  "installCommand": "cd frontend && npm ci --prefer-offline --no-audit",
   "functions": {
     "frontend/api/**/*": {
       "runtime": "nodejs18.x",
-      "maxDuration": 10
+      "maxDuration": 10,
+      "memory": 1024,
+      "maxEventLoopUtilization": 0.9
+    }
+  },
+  "build": {
+    "env": {
+      "NPM_FLAGS": "--prefer-offline --no-audit"
     }
   },
   "public": true,
@@ -16,7 +23,8 @@
       "dest": "/frontend/api/test/ping.js",
       "headers": {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, OPTIONS"
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Cache-Control": "public, max-age=60, stale-while-revalidate=300"
       }
     },
     {
@@ -25,15 +33,56 @@
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, X-API-Key"
+        "Access-Control-Allow-Headers": "Content-Type, X-API-Key",
+        "Cache-Control": "no-store, no-cache, must-revalidate"
       }
     },
     {
       "handle": "filesystem"
     },
     {
+      "src": "/assets/(.*)",
+      "headers": {
+        "cache-control": "public,max-age=31536000,stale-while-revalidate=86400,immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/_next/static/(.*)",
+      "headers": {
+        "cache-control": "public,max-age=31536000,immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(.+\\.[a-zA-Z0-9]+)$",
+      "headers": {
+        "cache-control": "public,max-age=31536000,stale-while-revalidate=86400"
+      },
+      "continue": true
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
-      "dest": "/frontend/dist/$1"
+      "dest": "/frontend/dist/$1",
+      "headers": {
+        "x-content-type-options": "nosniff",
+        "x-frame-options": "DENY",
+        "x-xss-protection": "1; mode=block"
+      }
     }
-  ]
+  ],
+  "crons": [
+    {
+      "path": "/api/test/ping",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "github": {
+    "enabled": true,
+    "silent": true,
+    "autoAlias": true
+  }
 }

@@ -1,4 +1,12 @@
-import { monitoringConfig } from '../../../config/monitoring';
+// Import monitoring config
+const monitoringConfig = {
+  canaryGroups: {
+    initial: ['test-org-1', 'test-org-2'],
+    wave1: ['client1', 'client2', 'client3'],
+    wave2: ['client4', 'client5', 'client6'],
+    wave3: ['client7', 'client8', 'client9', 'client10']
+  }
+};
 
 export default async function handler(req, res) {
   // Add CORS headers
@@ -11,10 +19,20 @@ export default async function handler(req, res) {
     return res.status(204).end();
   }
 
+  // Debug environment
+  const envDebug = {
+    hasApiKey: !!process.env.ADMIN_API_KEY,
+    receivedKey: req.headers['x-api-key'],
+    keyLength: process.env.ADMIN_API_KEY ? process.env.ADMIN_API_KEY.length : 0
+  };
+
   // Verify API key
   const apiKey = req.headers['x-api-key'];
   if (!apiKey || apiKey !== process.env.ADMIN_API_KEY) {
-    return res.status(403).json({ error: 'Invalid API key' });
+    return res.status(403).json({ 
+      error: 'Invalid API key',
+      debug: envDebug
+    });
   }
 
   // Only GET

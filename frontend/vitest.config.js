@@ -5,9 +5,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.ts',
-    threads: false,
-    // compatible with Vitest 0.34.6 worker configuration
-    pool: 'forks',
+    pool: 'vmThreads',
+    testTimeout: 10000,
     include: ['tests/**/*.test.js'],
     exclude: ['src/test/**']
   },
