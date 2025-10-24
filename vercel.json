@@ -5,13 +5,27 @@
   "installCommand": "cd frontend && npm install",
   "functions": {
     "frontend/api/**/*": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs18.x",
+      "maxDuration": 10
     }
   },
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/frontend/api/$1"
+      "src": "/api/test/ping",
+      "dest": "/frontend/api/test/ping.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS"
+      }
+    },
+    {
+      "src": "/api/admin/(.*)",
+      "dest": "/frontend/api/admin/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, X-API-Key"
+      }
     },
     {
       "handle": "filesystem"
