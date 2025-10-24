@@ -2,7 +2,7 @@ const LOG_LEVELS = {
   DEBUG: 'debug',
   INFO: 'info',
   WARN: 'warn',
-  ERROR: 'error'
+  ERROR: 'error',
 };
 
 function formatMessage(level, message, data = null) {
@@ -11,7 +11,7 @@ function formatMessage(level, message, data = null) {
     timestamp,
     level,
     message,
-    ...(data && { data })
+    ...(data && { data }),
   };
   return JSON.stringify(logEntry);
 }
@@ -43,8 +43,11 @@ export function warn(message, data = null) {
 }
 
 export function error(message, error = null, data = null) {
-  log('error', formatMessage(LOG_LEVELS.ERROR, message, {
-    ...(error && { error: error.message, stack: error.stack }),
-    ...(data && { data })
-  }));
+  log(
+    'error',
+    formatMessage(LOG_LEVELS.ERROR, message, {
+      ...(error && { error: error.message, stack: error.stack }),
+      ...(data && { data }),
+    })
+  );
 }

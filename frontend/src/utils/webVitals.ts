@@ -1,10 +1,16 @@
-import { type CLSMetric, type FCPMetric, type FIDMetric, type LCPMetric, type TTFBMetric } from 'web-vitals';
+import {
+  type CLSMetric,
+  type FCPMetric,
+  type FIDMetric,
+  type LCPMetric,
+  type TTFBMetric,
+} from 'web-vitals';
 
 export type WebVitalsMetric = CLSMetric | FCPMetric | FIDMetric | LCPMetric | TTFBMetric;
 
 export function reportWebVitals(metric: WebVitalsMetric) {
   // Analytics can be sent to your preferred service
-  
+
   // Example implementation for Google Analytics
   const analyticsId = import.meta.env.VITE_GA_ID;
   if (analyticsId) {

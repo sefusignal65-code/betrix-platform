@@ -37,9 +37,5 @@
       }
     }
   ],
-  "cache": [
-    ".next/cache",
-    ".vercel/cache",
-    "node_modules/.cache"
-  ]
+  "cache": [".next/cache", ".vercel/cache", "node_modules/.cache"]
 }

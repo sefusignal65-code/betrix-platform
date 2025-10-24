@@ -13,9 +13,9 @@ export default function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  return res.status(200).json({ 
-    ok: true, 
+  return res.status(200).json({
+    ok: true,
     time: new Date().toISOString(),
-    environment: process.env.VERCEL_ENV || 'development'
+    environment: process.env.VERCEL_ENV || 'development',
   });
 }

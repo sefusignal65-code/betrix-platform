@@ -1,5 +1,5 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   test: {
@@ -11,11 +11,8 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     coverage: {
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'src/test/setup.ts',
-      ],
+      exclude: ['node_modules/', 'src/test/setup.ts'],
     },
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
-})
+});

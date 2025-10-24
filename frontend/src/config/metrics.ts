@@ -22,12 +22,12 @@ interface CustomMetricAttributes extends MetricAttributes {
 // Create the Prometheus exporter
 const prometheusExporter = new PrometheusExporter({
   port: 9464,
-  startServer: true
+  startServer: true,
 } as ExporterConfig);
 
 // Create meter provider with the Prometheus exporter
 const meterProvider = new MeterProvider({
-  readers: [prometheusExporter]
+  readers: [prometheusExporter],
 });
 
 // Register the meter provider globally
@@ -39,27 +39,25 @@ const apiMeter = meterProvider.getMeter('api');
 const systemMeter = meterProvider.getMeter('system');
 
 // Create metrics with typed attributes
-const requestDurationHistogram = performanceMeter.createHistogram<CustomMetricAttributes>('http.request.duration', {
-  description: 'Duration of HTTP requests',
-  unit: 'ms'
-});
+const requestDurationHistogram = performanceMeter.createHistogram<CustomMetricAttributes>(
+  'http.request.duration',
+  {
+    description: 'Duration of HTTP requests',
+    unit: 'ms',
+  }
+);
 
 const requestCounter = apiMeter.createCounter<CustomMetricAttributes>('http.requests', {
-  description: 'Count of HTTP requests'
+  description: 'Count of HTTP requests',
 });
 
 const errorCounter = apiMeter.createCounter<CustomMetricAttributes>('http.errors', {
-  description: 'Count of HTTP errors'
+  description: 'Count of HTTP errors',
 });
 
 const memoryGauge = systemMeter.createUpDownCounter<CustomMetricAttributes>('system.memory.usage', {
   description: 'Memory usage',
-  unit: 'bytes'
+  unit: 'bytes',
 });
 
-export {
-  requestDurationHistogram,
-  requestCounter,
-  errorCounter,
-  memoryGauge
-};
+export { requestDurationHistogram, requestCounter, errorCounter, memoryGauge };

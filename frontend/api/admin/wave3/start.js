@@ -24,15 +24,15 @@ export default async function handler(req, res) {
 
   try {
     await executeWave3Rollout();
-    return res.status(200).json({ 
+    return res.status(200).json({
       message: 'Wave 3 rollout initiated successfully',
       status: 'running',
-      startTime: new Date().toISOString()
+      startTime: new Date().toISOString(),
     });
   } catch (error) {
-    return res.status(500).json({ 
+    return res.status(500).json({
       error: 'Wave 3 rollout failed to start',
-      message: error.message 
+      message: error.message,
     });
   }
 }

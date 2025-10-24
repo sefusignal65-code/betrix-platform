@@ -1,11 +1,10 @@
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function validateApiKey(req) {
-  const apiKeyHeader = req.headers['x-api-key'] || 
-                      req.headers['X-API-Key'] || 
-                      req.headers['X-Api-Key'];
+  const apiKeyHeader =
+    req.headers['x-api-key'] || req.headers['X-API-Key'] || req.headers['X-Api-Key'];
   const expectedKey = process.env.ADMIN_API_KEY;
-  
+
   // Debug log (temporary)
   // Debug info available in debug mode only
   if (process.env.DEBUG) {
@@ -13,19 +12,19 @@ function validateApiKey(req) {
       received: apiKeyHeader,
       expected: expectedKey,
       envKeys: Object.keys(process.env),
-      matches: apiKeyHeader === expectedKey
+      matches: apiKeyHeader === expectedKey,
     };
     // eslint-disable-next-line no-console
     console.debug('API Key debug:', debug);
   }
-  
+
   return apiKeyHeader === expectedKey;
 }
 
 async function getRawBody(req) {
   return await new Promise((resolve, reject) => {
     let data = '';
-    req.on('data', chunk => data += chunk);
+    req.on('data', (chunk) => (data += chunk));
     req.on('end', () => resolve(data));
     req.on('error', reject);
   });
@@ -34,8 +33,16 @@ async function getRawBody(req) {
 async function generateRandomClients(count) {
   // TODO: replace with a real client list fetch
   const allClients = [
-    'client1','client2','client3','client4','client5',
-    'client6','client7','client8','client9','client10'
+    'client1',
+    'client2',
+    'client3',
+    'client4',
+    'client5',
+    'client6',
+    'client7',
+    'client8',
+    'client9',
+    'client10',
   ];
   return allClients.sort(() => Math.random() - 0.5).slice(0, Math.max(0, count));
 }
@@ -46,9 +53,9 @@ async function enableModelForClient(clientId, model) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.ADMIN_API_KEY}`
+      Authorization: `Bearer ${process.env.ADMIN_API_KEY}`,
     },
-    body: JSON.stringify({ model, enabled: true })
+    body: JSON.stringify({ model, enabled: true }),
   });
   if (!resp.ok) {
     const text = await resp.text().catch(() => '');
@@ -99,10 +106,16 @@ export default async function handler(req, res) {
 
   const { model, clients, canaryCount = 2, apply = false } = body || {};
   if (!model) return res.status(400).json({ error: 'Model parameter is required' });
-  if (model !== 'claude-sonnet-3.5') return res.status(400).json({ error: 'Invalid model. Only claude-sonnet-3.5 is supported.' });
+  if (model !== 'claude-sonnet-3.5')
+    return res.status(400).json({ error: 'Invalid model. Only claude-sonnet-3.5 is supported.' });
 
-  const clientList = clients ? String(clients).split(',').map(c => c.trim()).filter(Boolean) : [];
-  const selected = clientList.length ? clientList : (await generateRandomClients(canaryCount));
+  const clientList = clients
+    ? String(clients)
+        .split(',')
+        .map((c) => c.trim())
+        .filter(Boolean)
+    : [];
+  const selected = clientList.length ? clientList : await generateRandomClients(canaryCount);
   if (!selected.length) return res.status(400).json({ error: 'No clients to process' });
 
   const changes = [];
@@ -128,5 +141,11 @@ export default async function handler(req, res) {
     }
   }
 
-  return res.status(200).json({ success: true, dryRun: !apply, changes, errors: errors.length ? errors : undefined, timestamp: new Date().toISOString() });
+  return res.status(200).json({
+    success: true,
+    dryRun: !apply,
+    changes,
+    errors: errors.length ? errors : undefined,
+    timestamp: new Date().toISOString(),
+  });
 }

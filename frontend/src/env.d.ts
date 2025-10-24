@@ -9,6 +9,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
+type Gtag = import('gtag.js').Gtag;
+
 interface Window {
-  gtag?: (command: string, eventName: string, params: Record<string, unknown>) => void;
+  gtag: Gtag;
 }

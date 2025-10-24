@@ -4,12 +4,12 @@ test.describe('API Endpoints', () => {
   test('should handle canary enable endpoint correctly', async ({ request }) => {
     const response = await request.post('/api/admin/canary/enable', {
       headers: {
-        'X-API-Key': process.env.ADMIN_API_KEY || 'test-key'
+        'X-API-Key': process.env.ADMIN_API_KEY || 'test-key',
       },
       data: {
         model: 'test-model',
-        clients: ['client1', 'client2']
-      }
+        clients: ['client1', 'client2'],
+      },
     });
 
     expect(response.ok()).toBeTruthy();
@@ -20,11 +20,11 @@ test.describe('API Endpoints', () => {
   test('should handle invalid API key correctly', async ({ request }) => {
     const response = await request.post('/api/admin/canary/enable', {
       headers: {
-        'X-API-Key': 'invalid-key'
+        'X-API-Key': 'invalid-key',
       },
       data: {
-        model: 'test-model'
-      }
+        model: 'test-model',
+      },
     });
 
     expect(response.status()).toBe(403);

@@ -9,10 +9,7 @@ const config: PlaywrightTestConfig = {
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
-  reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results/e2e-results.json' }]
-  ],
+  reporter: [['html'], ['json', { outputFile: 'test-results/e2e-results.json' }]],
   projects: [
     {
       name: 'Chrome',
