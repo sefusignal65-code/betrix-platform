@@ -3,6 +3,11 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "installCommand": "cd frontend && npm install",
+  "functions": {
+    "frontend/api/**/*": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
     {
       "src": "/api/(.*)",
@@ -16,5 +21,4 @@
       "dest": "/frontend/dist/$1"
     }
   ]
-  
 }
