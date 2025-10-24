@@ -35,12 +35,14 @@ async function enableModelForClient(clientId, model) {
   return resp.json();
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
+  // Add CORS headers for all responses
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-API-Key');
+
   // CORS preflight
   if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-API-Key');
     return res.status(204).end();
   }
 
@@ -96,4 +98,4 @@ module.exports = async function handler(req, res) {
   }
 
   return res.status(200).json({ success: true, dryRun: !apply, changes, errors: errors.length ? errors : undefined, timestamp: new Date().toISOString() });
-};
+}
