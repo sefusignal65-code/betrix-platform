@@ -53,7 +53,7 @@
     "@playwright/test": "^1.56.1",
     "@sentry/vite-plugin": "^4.5.0",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^14.3.1",
+    "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/gtag.js": "^0.0.20",
     "@types/react": "^18.2.33",
@@ -61,7 +61,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-react": "^4.1.0",
-    "@vitest/coverage-v8": "^1.6.1",
+    "@vitest/coverage-v8": "^4.0.3",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^29.0.1",
@@ -78,6 +78,6 @@
     "terser": "^5.22.0",
     "typescript": "^5.0.4",
     "vite": "^5.4.21",
-    "vitest": "^1.6.1"
+    "vitest": "^4.0.3"
   }
 }
