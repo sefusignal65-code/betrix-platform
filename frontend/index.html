@@ -1,166 +1,377 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>BETRIX - AI-Powered Betting Platform</title>
+<head>
+    <title>BETRIX - AI-Powered Global Betting Ecosystem</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-      }
-      .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      header {
-        text-align: center;
-        padding: 40px 0;
-      }
-      h1 {
-        color: gold;
-        font-size: 3em;
-        margin-bottom: 10px;
-      }
-      .subtitle {
-        font-size: 1.3em;
-        opacity: 0.9;
-        margin-bottom: 30px;
-      }
-      .revenue-box {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 25px;
-        margin: 15px 0;
-        border-radius: 15px;
-        border: 2px solid gold;
-      }
-      .cta-button {
-        display: inline-block;
-        background: gold;
-        color: black;
-        padding: 15px 30px;
-        text-decoration: none;
-        border-radius: 10px;
-        font-weight: bold;
-        margin: 10px;
-        font-size: 1.1em;
-      }
-      .stats {
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-        margin: 40px 0;
-      }
-      .stat-item {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 10px;
-        flex: 1;
-        margin: 0 10px;
-      }
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin: 30px 0;
-      }
-      .feature-card {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 25px;
-        border-radius: 10px;
-        text-align: center;
-      }
+        body {
+            font-family: 'Inter', -apple-system, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1c2a 0%, #2d1b47 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 60px 0;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            color: #00f6ff;
+            font-size: 4em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(0,246,255,0.3);
+            letter-spacing: -1px;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .revenue-box {
+            background: rgba(0,246,255,0.05);
+            padding: 35px;
+            margin: 25px 0;
+            border-radius: 20px;
+            border: 1px solid rgba(0,246,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .cta-button {
+            display: inline-block;
+            background: #00f6ff;
+            color: #1a1c2a;
+            padding: 18px 35px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: bold;
+            margin: 10px;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 2px solid transparent;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,246,255,0.3);
+        }
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid #00f6ff;
+            color: #00f6ff;
+        }
+        .cta-button.accent {
+            background: #ff3e8a;
+            color: white;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            padding: 30px;
+            border-radius: 15px;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .stat-item h3 {
+            color: #00f6ff;
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.03);
+            padding: 35px;
+            border-radius: 15px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-card h3 {
+            color: #00f6ff;
+            margin-top: 0;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tech-pill {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(0,246,255,0.1);
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+            color: #00f6ff;
+        }
+        .section-title {
+            text-align: center;
+            margin: 60px 0 30px;
+            font-size: 2.5em;
+            color: #00f6ff;
+        }
+        .section-subtitle {
+            text-align: center;
+            max-width: 800px;
+            margin: -20px auto 40px;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            h1 { font-size: 3em; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
     </style>
-  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
   <body>
-    <div id="app" class="container">
-      <header>
-        <a href="https://stake.com/?c=tCSNtQ4x" class="cta-button">🚀 Start Earning Now</a>
-        <a href="https://stake.com/?c=tCSNtQ4x" class="cta-button" style="background: #00ff00"
-          >⭐ Get 100% Bonus at Stake</a
-        >
-      </header>
+    <div class="container">
+        <header>
+            <h1>BETRIX</h1>
+            <div class="subtitle">
+                Experience the Future of Betting with Our Revolutionary AI-Powered Global Ecosystem
+            </div>
+            <div>
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button" target="_blank">Join BETRIX Wave 3.0</a>
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button secondary" target="_blank">View Live Results</a>
+            </div>
+        </header>
 
-      <!-- Revenue Explanation -->
-      <div class="revenue-box">
-        <h2>💰 How You Make Money</h2>
-        <p>
-          When visitors use your affiliate links to sign up with betting sites, you earn commissions
-          on their bets!
-        </p>
-        <div style="margin-top: 20px">
-          <a
-            href="https://stake.com/?c=tCSNtQ4x"
-            class="cta-button"
-            target="_blank"
-            rel="noopener noreferrer"
-            >🚀 Start Earning Now</a
-          >
-          <a
-            href="https://stake.com/?c=tCSNtQ4x"
-            class="cta-button"
-            style="background: #00ff00"
-            target="_blank"
-            rel="noopener noreferrer"
-            >⭐ Join Affiliate Program</a
-          >
+        <div class="revenue-box">
+            <h2>$30,000,000+ Generated Through AI-Powered Predictions</h2>
+            <p>Join BETRIX Wave 3.0 and access our advanced AI betting ecosystem. Our deep learning models analyze millions of data points per second, providing members with high-probability betting opportunities across global markets.</p>
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0;">
+                <div style="background: rgba(0,246,255,0.1); padding: 15px 25px; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 1.8em; color: #00f6ff; font-weight: bold;">95%</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">Prediction<br>Accuracy</div>
+                </div>
+                <div style="background: rgba(0,246,255,0.1); padding: 15px 25px; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 1.8em; color: #00f6ff; font-weight: bold;">24/7</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">AI-Powered<br>Analysis</div>
+                </div>
+                <div style="background: rgba(0,246,255,0.1); padding: 15px 25px; border-radius: 15px; text-align: center;">
+                    <div style="font-size: 1.8em; color: #00f6ff; font-weight: bold;">100+</div>
+                    <div style="opacity: 0.8; font-size: 0.9em;">Markets<br>Covered</div>
+                </div>
+            </div>
+            <div style="margin-top: 25px;">
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button accent" target="_blank">Join Wave 3.0 Now</a>
+                <span style="margin: 0 15px; opacity: 0.6;">or</span>
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button secondary" target="_blank">View Live Results</a>
+            </div>
         </div>
-      </div>
 
-      <!-- Stats Section -->
-      <div class="stats">
-        <div class="stat-item">
-          <h3>25-45%</h3>
-          <p>Commission Rate</p>
+        <h2 class="section-title">Platform Performance</h2>
+        <p class="section-subtitle">Our AI-driven platform consistently outperforms traditional betting methods</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Success Rate<br><span style="opacity: 0.7">Verified Predictions</span></p>
+            </div>
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Active Users<br><span style="opacity: 0.7">Worldwide Community</span></p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>AI Analysis<br><span style="opacity: 0.7">Real-time Support</span></p>
+            </div>
+            <div class="stat-item">
+                <h3>$30M+</h3>
+                <p>Generated Revenue<br><span style="opacity: 0.7">For Our Members</span></p>
+            </div>
         </div>
-        <div class="stat-item">
-          <h3>70+</h3>
-          <p>Betting Partners</p>
-        </div>
-        <div class="stat-item">
-          <h3>$0</h3>
-          <p>Startup Cost</p>
-        </div>
-      </div>
 
-      <!-- Features Grid -->
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>🤖 AI Predictions</h3>
-          <p>Machine learning powered betting insights</p>
-        </div>
-        <div class="feature-card">
-          <h3>🌍 Global Reach</h3>
-          <p>Multi-language support for worldwide users</p>
-        </div>
-        <div class="feature-card">
-          <h3>💸 Multiple Revenue</h3>
-          <p>Affiliate, premium features, advertising</p>
-        </div>
-        <div class="feature-card">
-          <h3>🚀 Instant Setup</h3>
-          <p>Get started in under 30 minutes</p>
-        </div>
-      </div>
+        <h2 class="section-title">Advanced Features</h2>
+        <p class="section-subtitle">Powered by cutting-edge AI technology and real-time data analysis</p>
 
-      <!-- Call to Action -->
-      <div style="text-align: center; margin: 50px 0">
-        <h2>Ready to Start Your Betting Business?</h2>
-        <p>Zero coding experience required - we guide you through everything!</p>
-        <a
-          href="https://stake.com/?c=tCSNtQ4x"
-          class="cta-button"
-          style="background: #ff6b00; font-size: 1.3em"
-          target="_blank"
-          rel="noopener noreferrer"
-          >🎯 LAUNCH YOUR PLATFORM</a
-        >
-      </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🤖 Advanced AI Core</h3>
+                <p>Our next-gen neural networks process real-time market data, news sentiment, and historical patterns to identify prime betting opportunities with up to 95% accuracy.</p>
+                <div>
+                    <span class="tech-pill">Deep Learning</span>
+                    <span class="tech-pill">GPT Integration</span>
+                    <span class="tech-pill">Real-time Analysis</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <h3>📊 Smart Risk Management</h3>
+                <p>Advanced risk assessment algorithms ensure optimal bet sizing and portfolio management for sustained profitability.</p>
+                <div>
+                    <span class="tech-pill">Risk Analysis</span>
+                    <span class="tech-pill">Portfolio Optimization</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 Global Market Access</h3>
+                <p>Access betting opportunities across multiple international markets 24/7, with real-time odds comparison and arbitrage detection.</p>
+                <div>
+                    <span class="tech-pill">Multi-Market</span>
+                    <span class="tech-pill">Real-time Data</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <h3>🔒 Enterprise Security</h3>
+                <p>Military-grade encryption and blockchain technology ensure maximum security for your data and transactions, with multi-factor authentication and real-time fraud detection.</p>
+                <div>
+                    <span class="tech-pill">Blockchain</span>
+                    <span class="tech-pill">MFA</span>
+                    <span class="tech-pill">Zero Trust</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <h3>� Mobile Optimization</h3>
+                <p>Access BETRIX's powerful features on any device with our responsive platform and real-time mobile notifications.</p>
+                <div>
+                    <span class="tech-pill">Cross-platform</span>
+                    <span class="tech-pill">Real-time Alerts</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <h3>🤝 Community Support</h3>
+                <p>Join our thriving community of successful bettors. Share insights, strategies, and success stories with members worldwide.</p>
+                <div>
+                    <span class="tech-pill">24/7 Support</span>
+                    <span class="tech-pill">Expert Community</span>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Technical Excellence</h2>
+        <p class="section-subtitle">Built on cutting-edge technology for unmatched performance and reliability</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 40px 0;">
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
+                <h3 style="color: #00f6ff; margin: 10px 0;">High Performance</h3>
+                <p>Sub-millisecond latency for real-time betting decisions</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">🔄</div>
+                <h3 style="color: #00f6ff; margin: 10px 0;">Auto-Scaling</h3>
+                <p>Elastic infrastructure that scales with demand</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">🔗</div>
+                <h3 style="color: #00f6ff; margin: 10px 0;">Blockchain Ready</h3>
+                <p>Native integration with major blockchain networks</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 2em; margin-bottom: 10px;">🛡️</div>
+                <h3 style="color: #00f6ff; margin: 10px 0;">99.99% Uptime</h3>
+                <p>Enterprise-grade reliability and redundancy</p>
+            </div>
+        </div>
+
+        <div class="revenue-box" style="text-align: center;">
+            <h3 style="color: #00f6ff; margin-bottom: 20px;">Integration Ready</h3>
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin: 20px 0;">
+                <span class="tech-pill">REST API</span>
+                <span class="tech-pill">WebSocket</span>
+                <span class="tech-pill">GraphQL</span>
+                <span class="tech-pill">Smart Contracts</span>
+                <span class="tech-pill">OAuth 2.0</span>
+                <span class="tech-pill">WebHooks</span>
+            </div>
+            <p style="margin-top: 20px;">Enterprise-ready APIs and integration points for seamless platform connectivity</p>
+        </div>
+
+        <div style="text-align: center; margin: 60px 0;">
+            <h2 class="section-title">Ready to Transform Your Betting Strategy?</h2>
+            <p class="section-subtitle">Join BETRIX Wave 3.0 today and experience the power of AI-driven betting</p>
+            <div style="margin-top: 30px;">
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button" target="_blank">Join BETRIX Wave 3.0</a>
+                <a href="https://t.me/+gMRUZW8-BgY1ZTdk" class="cta-button secondary" target="_blank">Learn More</a>
+            </div>
+        </div>
     </div>
 
-    <script type="module" src="/main.js"></script>
-  </body>
+    <script async src="https://telegram.org/js/telegram-widget.js?22" 
+            data-telegram-login="BetrixAIBot" 
+            data-size="large" 
+            data-radius="10"
+            data-onauth="onTelegramAuth(user)"
+            data-request-access="write">
+    </script>
+    <script>
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Telegram Authentication Handler
+        function onTelegramAuth(user) {
+            // Add auth_date and hash from Telegram
+            fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('betrix_token', data.token);
+                    localStorage.setItem('betrix_user', JSON.stringify({
+                        telegram_id: data.telegram_id,
+                        username: data.username,
+                        role: data.role,
+                        photo_url: data.photo_url
+                    }));
+                    
+                    // Redirect based on role
+                    if (data.role === 'admin') {
+                        window.location.href = '/admin/dashboard';
+                    } else {
+                        window.location.href = '/dashboard';
+                    }
+                } else if (data.error === 'Subscription required') {
+                    // Redirect to Telegram channel for subscription
+                    window.location.href = data.redirectUrl;
+                }
+            })
+            .catch(error => {
+                console.error('Authentication error:', error);
+                alert('Authentication failed. Please try again.');
+            });
+        }
+    </script>
+</body>
 </html>
