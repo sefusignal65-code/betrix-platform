@@ -76,7 +76,7 @@
     "rimraf": "^5.0.10",
     "rollup-plugin-visualizer": "^5.9.2",
     "terser": "^5.22.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.0.4",
     "vite": "^5.4.21",
     "vitest": "^1.6.1"
   }
