@@ -9,6 +9,7 @@
       "maxDuration": 10
     }
   },
+  "public": true,
   "routes": [
     {
       "src": "/api/test/ping",
