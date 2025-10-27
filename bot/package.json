@@ -1,0 +1,36 @@
+{
+  "name": "betrix-ai-bot",
+  "version": "1.0.0",
+  "description": "BETRIX AI Telegram Bot",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "train": "node scripts/train-model.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "axios": "^1.5.0",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "moment": "^2.29.4",
+    "mongodb": "^6.0.0",
+    "mongoose": "^7.5.0",
+    "natural": "^6.5.0",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.2",
+    "node-telegram-bot-api": "^0.64.0",
+    "openai": "^4.104.0",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "eslint": "^8.48.0",
+    "jest": "^29.7.0",
+    "jest-environment-node": "^30.2.0",
+    "mongodb-memory-server": "^10.2.3",
+    "nodemon": "^3.0.1"
+  }
+}

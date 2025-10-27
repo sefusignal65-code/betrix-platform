@@ -1,0 +1,47 @@
+name: Setup Vercel Project
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/setup-vercel.yml'
+
+jobs:
+  setup-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Create Project (if not exists)
+        run: |
+          PROJECT_EXISTS=$(vercel projects ls 2>/dev/null | grep -c "betrix-platform" || true)
+          if [ "$PROJECT_EXISTS" -eq 0 ]; then
+            echo "Creating new Vercel project..."
+            vercel project create betrix-platform --confirm
+          else
+            echo "Project already exists"
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Configure Project
+        run: |
+          # Set production branch
+          vercel project update betrix-platform --prod-branch main
+
+          # Add environment variables
+          vercel env add VITE_API_BASE_URL production
+          vercel env add ADMIN_API_KEY production
+          vercel env add VITE_GA_ID production
+          vercel env add VITE_SENTRY_DSN production
+
+          # Link local project
+          vercel link --project betrix-platform --confirm
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
