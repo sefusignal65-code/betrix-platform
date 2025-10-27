@@ -14,7 +14,7 @@
     {
       "src": "/api/bot/webhook",
       "dest": "/pages/api/bot/webhook.js",
-      "methods": ["POST", "OPTIONS"],
+      "methods": ["GET", "POST", "OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
