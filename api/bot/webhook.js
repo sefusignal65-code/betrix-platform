@@ -84,6 +84,30 @@ async function processCommand(message) {
 }
 
 module.exports = async function handler(req, res) {
+  // Handle health check request
+  if (req.method === 'GET' && req.query.health === 'check') {
+    const webhookSecret = req.headers['x-webhook-secret'];
+    if (webhookSecret !== process.env.TELEGRAM_WEBHOOK_SECRET) {
+      return res.status(401).json({ status: 'error', message: 'Invalid webhook secret' });
+    }
+
+    try {
+      // Get webhook info from Telegram
+      const webhookInfo = await axios.get(`${TELEGRAM_API}/getWebhookInfo`);
+      
+      return res.status(200).json({
+        status: 'healthy',
+        webhook: webhookInfo.data.result
+      });
+    } catch (error) {
+      console.error('Health check error:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: error.message
+      });
+    }
+  }
+
   console.log('Received update (root api):', JSON.stringify(req.body, null, 2));
 
   if (req.method !== 'POST') return res.status(200).send('OK');
