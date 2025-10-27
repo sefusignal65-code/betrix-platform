@@ -60,4 +60,42 @@ const memoryGauge = systemMeter.createUpDownCounter<CustomMetricAttributes>('sys
   unit: 'bytes',
 });
 
-export { requestDurationHistogram, requestCounter, errorCounter, memoryGauge };
+// AI-specific metrics
+const aiRequestDurationHistogram = apiMeter.createHistogram<CustomMetricAttributes>(
+  'ai.request.duration',
+  {
+    description: 'Duration of AI requests',
+    unit: 'ms',
+  }
+);
+
+const aiTokenCounter = apiMeter.createCounter<CustomMetricAttributes>('ai.tokens.used', {
+  description: 'Number of AI tokens used',
+});
+
+const aiRateLimitGauge = apiMeter.createUpDownCounter<CustomMetricAttributes>(
+  'ai.rate.limit',
+  {
+    description: 'Current rate limit usage',
+    unit: 'requests',
+  }
+);
+
+const aiErrorRateGauge = apiMeter.createUpDownCounter<CustomMetricAttributes>(
+  'ai.error.rate',
+  {
+    description: 'AI request error rate',
+    unit: 'errors/minute',
+  }
+);
+
+export {
+  requestDurationHistogram,
+  requestCounter,
+  errorCounter,
+  memoryGauge,
+  aiRequestDurationHistogram,
+  aiTokenCounter,
+  aiRateLimitGauge,
+  aiErrorRateGauge,
+};
